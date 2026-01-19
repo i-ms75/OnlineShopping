@@ -29,6 +29,7 @@ public class ProductService {
 
     public List<ProductResponse> getAllProducts() {
         List<Product> products = productRepository.findAll();
+        log.info("Retrieved {} products from the database", products.size());
         return products.stream().map(product -> mapToProductResponse(product)).toList();
     }
 
