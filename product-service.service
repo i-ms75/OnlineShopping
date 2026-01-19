@@ -1,0 +1,19 @@
+[Unit]
+Description=Product Service Application
+After=network.target
+
+[Service]
+Type=simple
+User=appuser
+WorkingDirectory=/opt/product-service
+EnvironmentFile=/opt/product-service/.env
+ExecStart=/usr/bin/java -jar /opt/product-service/ProductService.jar \
+  --server.port=8080 \
+  --spring.data.mongodb.uri=${MONGODB_URI}
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
