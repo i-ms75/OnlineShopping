@@ -1,0 +1,23 @@
+[Unit]
+Description=Order Service Application
+After=network.target
+
+[Service]
+Type=simple
+User=appuser
+WorkingDirectory=/opt/order-service
+EnvironmentFile=/opt/order-service/.env
+ExecStart=/usr/bin/java -jar /opt/order-service/OrderService.jar \
+  --server.port=8081 \
+  --spring.datasource.driver-class-name=org.postgresql.Driver
+  --spring.datasource.url=${POSTGRESQL_URI}
+  --spring.datasource.username=${POSTGRESQL_USER}
+  --spring.datasource.password=${POSTGRESQL_PWD}
+  --spring.jpa.hibernate.ddl-auto=update
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
