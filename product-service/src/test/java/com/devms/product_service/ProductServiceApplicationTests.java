@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.junit.jupiter.Container;
@@ -21,7 +22,9 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.math.BigDecimal;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.testcontainers.shaded.org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 @SpringBootTest
 @Testcontainers
@@ -54,10 +57,12 @@ class ProductServiceApplicationTests {
 	}
 	@Test
 	void shouldGetAllProducts() throws Exception {
-		ProductRequest productRequest = getProductRequest();
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/product")
 						.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].name").value("iphone"))
+				.andExpect(jsonPath("$[0].price").value(1300));
+		;
 	}
 
 	private ProductRequest getProductRequest(){
