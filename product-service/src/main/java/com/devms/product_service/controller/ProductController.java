@@ -32,7 +32,7 @@ public class ProductController {
     @ResponseStatus(HttpStatus.OK)
     public List<ProductResponse> getAllProduct()
     {
-        log.info("Fetched all products");
+        log.info("Fetched all products 2am {}", productService.getAllProducts());
         return productService.getAllProducts();
 
     }
